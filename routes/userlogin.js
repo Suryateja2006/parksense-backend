@@ -1,7 +1,7 @@
 // backend/routes/facultyLogin.js
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const Faculty = require('../models/Faculty'); // Correctly import the Faculty model
 const router = express.Router();
 
