@@ -56,7 +56,7 @@ app.get("/",(req,res)=>{
   return res.send("Welcome to the booking system");
 })  
 // Start the server
-const PORT =5000 || 8080;
+const PORT =process.env.PORT|| 8080;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
