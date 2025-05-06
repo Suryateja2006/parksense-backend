@@ -19,7 +19,7 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://localhost:5173', // Frontend URL, adjust this based on your environment
+  origin: 'https://parksense-backend-production.up.railway.app', // Frontend URL, adjust this based on your environment
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // Allow cookies to be sent from the frontend
@@ -53,7 +53,7 @@ app.get("/",(req,res)=>{
   return res.send("Welcome to the booking system");
 })  
 // Start the server
-const PORT = process.env.PORT || 5000;
+const PORT =8080;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

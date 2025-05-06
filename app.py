@@ -1,7 +1,7 @@
 import qrcode
 
 # Use the Ngrok public URL, not localhost
-url = " https://7c01-2409-40f0-1156-8354-a9a7-aeb-4968-7d04.ngrok-free.app"  # Replace with your actual Ngrok URL
+url = "https://9111-2001-4490-4c99-fc80-7d02-c46f-fe87-d314.ngrok-free.app"  # Replace with your actual Ngrok URL
 
 # Generate the QR code
 qr = qrcode.make(url)
