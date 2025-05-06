@@ -19,7 +19,10 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: 'https://parksense-backend-production.up.railway.app', // Frontend URL, adjust this based on your environment
+  origin: [
+    "http://localhost:5173",  // Your local Vite frontend
+    /https:\/\/.*\.ngrok\.io$/, // Regex for ALL ngrok URLs
+  ], // Frontend URL, adjust this based on your environment
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // Allow cookies to be sent from the frontend
@@ -53,7 +56,7 @@ app.get("/",(req,res)=>{
   return res.send("Welcome to the booking system");
 })  
 // Start the server
-const PORT =8080;
+const PORT =5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -8,7 +8,7 @@ const router = express.Router();
 // Faculty login route
 router.post('/', async (req, res) => {
   const { phone, password } = req.body;
-
+  res.status(200).json({ message: "Hello from Vercel backend!" });
   console.log("Received phone: ", phone); // Log the received phone number
 
   try {
