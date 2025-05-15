@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Booking');
 
-// Book a slot
 router.post('/', async (req, res) => {
   try {
     const { phoneNumber, carNumber, slotNumber } = req.body;
@@ -13,7 +12,6 @@ router.post('/', async (req, res) => {
     const booking = new Booking({ phoneNumber, carNumber, slotNumber });
     await booking.save();
 
-    // Set timer to unbook after 30 mins if not updated (cron/job in production)
     setTimeout(async () => {
       const latest = await Booking.findById(booking._id);
       if (latest && latest.isActive) {
@@ -21,7 +19,7 @@ router.post('/', async (req, res) => {
         await latest.save();
         console.log(`Slot ${latest.slotNumber} auto-released after 30 mins.`);
       }
-    }, 30 * 60 * 1000); // 30 minutes
+    }, 30 * 60 * 1000); 
 
     res.status(201).json({ message: 'Slot booked successfully', booking });
   } catch (err) {
@@ -29,7 +27,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get all active bookings
 router.get('/active', async (req, res) => {
   try {
     const bookings = await Booking.find({ isActive: true });
@@ -38,8 +35,6 @@ router.get('/active', async (req, res) => {
     res.status(500).json({ message: 'Error fetching bookings', error: err.message });
   }
 });
-
-// Unbook a slot manually
 router.post('/unbook', async (req, res) => {
   try {
     const { slotNumber } = req.body;

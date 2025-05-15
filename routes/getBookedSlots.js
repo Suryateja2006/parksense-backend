@@ -2,14 +2,12 @@ const express = require("express");
 const router = express.Router();
 const Slot = require("../models/Slot");
 
-// GET /api/getBookedSlots
 router.get("/", async (req, res) => {
   try {
+    const type = req.query.type || 'faculty';
     const totalSlots = 24;
-
-    // Count documents where booked is true
-    const bookedSlotsCount = await Slot.countDocuments({ booked: true });
-
+    const bookedSlotsCount = await Slot.countDocuments({ userType: type });
+    
     res.status(200).json({
       totalSlots,
       bookedSlots: bookedSlotsCount,

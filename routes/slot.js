@@ -2,19 +2,16 @@ const express = require('express');
 const router = express.Router();
 const Slot = require('../models/Slot');
 
-// Auto-book endpoint for faculty
 router.post('/auto-book-faculty', async (req, res) => {
   const { phoneNumber, carNumber } = req.body;
 
   try {
-    // ✅ 1. Check if user already has a slot booked
     const existingSlot = await Slot.findOne({ phoneNumber, userType: 'faculty' });
 
     if (existingSlot) {
       return res.json({ success: true, slot: existingSlot });
     }
 
-    // ✅ 2. Proceed with normal booking if not already booked
     const bookedSlots = await Slot.find({ userType: 'faculty' });
     const bookedSlotNumbers = bookedSlots.map(slot => slot.slotNumber);
 
@@ -36,11 +33,9 @@ router.post('/auto-book-faculty', async (req, res) => {
       return res.status(400).json({ success: false, message: 'No slots available' });
     }
 
-    // Convert current UTC time to IST (Indian Standard Time)
     const utcDate = new Date();
-    const istDate = new Date(utcDate.getTime() + (5.5 * 60 * 60 * 1000)); // Add 5.5 hours for IST
+    const istDate = new Date(utcDate.getTime() + (5.5 * 60 * 60 * 1000)); 
 
-    // Format IST date to string "YYYY-MM-DD HH:mm:ss"
     const formattedISTTime = istDate.toISOString().slice(0, 19).replace("T", " "); 
 
     const newSlot = new Slot({
@@ -48,7 +43,7 @@ router.post('/auto-book-faculty', async (req, res) => {
       phoneNumber,
       carNumber,
       userType: 'faculty',
-      bookedAt: formattedISTTime,  // Save IST formatted time
+      bookedAt: formattedISTTime,  
     });
 
     const savedSlot = await newSlot.save();
@@ -64,7 +59,6 @@ router.post('/auto-book-student', async (req, res) => {
   const { phoneNumber, carNumber } = req.body;
 
   try {
-    // ✅ 1. Check if user already has a slot booked
     const existingSlot = await Slot.findOne({ phoneNumber, userType: 'student' });
 
     if (existingSlot) {
@@ -72,10 +66,9 @@ router.post('/auto-book-student', async (req, res) => {
       return res.json({ success: true, slot: existingSlot });
     }
 
-    // ✅ 2. Proceed with normal booking if not already booked
     const bookedSlots = await Slot.find({ userType: 'student' });
     const bookedSlotNumbers = bookedSlots.map(slot => slot.slotNumber);
-    console.log("Booked slots:", bookedSlotNumbers);  // Log booked slot numbers
+    console.log("Booked slots:", bookedSlotNumbers); 
 
     const rows = ['E', 'F', 'G', 'H'];
     let availableSlot = null;
@@ -98,11 +91,9 @@ router.post('/auto-book-student', async (req, res) => {
 
     console.log("Available slot found:", availableSlot);
 
-    // Convert current UTC time to IST (Indian Standard Time)
     const utcDate = new Date();
-    const istDate = new Date(utcDate.getTime() + (5.5 * 60 * 60 * 1000)); // Add 5.5 hours for IST
+    const istDate = new Date(utcDate.getTime() + (5.5 * 60 * 60 * 1000)); 
 
-    // Format IST date to string "YYYY-MM-DD HH:mm:ss"
     const formattedISTTime = istDate.toISOString().slice(0, 19).replace("T", " "); 
 
     const newSlot = new Slot({
@@ -110,7 +101,7 @@ router.post('/auto-book-student', async (req, res) => {
       phoneNumber,
       carNumber,
       userType: 'student',
-      bookedAt: formattedISTTime,  // Save IST formatted time
+      bookedAt: formattedISTTime, 
     });
 
     const savedSlot = await newSlot.save();
@@ -123,20 +114,16 @@ router.post('/auto-book-student', async (req, res) => {
   }
 });
 
-// Release slot endpoint with userType consideration
 router.post('/release-slot', async (req, res) => {
   const { slotNumber} = req.body;
 
   try {
-    // Ensure userType matches the slot's userType (i.e., faculty or student)
     const slot = await Slot.findOne({ slotNumber });
 
     if (!slot) {
       return res.status(404).json({ success: false, message: 'Slot not found' });
     }
 
-
-    // Proceed with deletion of the slot if userType matches
     await Slot.deleteOne({ slotNumber });
 
     res.json({ success: true, message: 'Slot released successfully' });
@@ -149,7 +136,6 @@ router.post('/release-slot', async (req, res) => {
   }
 });
 
-// Get all slots
 router.get('/slots', async (req, res) => {
   try {
     const slots = await Slot.find();

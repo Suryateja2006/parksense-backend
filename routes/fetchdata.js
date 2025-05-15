@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Slot = require('../models/Slot');  // Slot model
+const Slot = require('../models/Slot');  
 
-// MongoDB connection string
 const uri = 'mongodb+srv://suryateja2neti:Suryateja@parksense.coocf1i.mongodb.net/test?retryWrites=true&w=majority';
 
 mongoose.connect(uri)
@@ -9,7 +8,6 @@ mongoose.connect(uri)
     console.log('Connected to MongoDB Atlas');
 
     try {
-      // Fetch all slots along with their details
       const slots = await Slot.find({});
       console.log('\n--- Slot Details ---');
       console.log(slots);
