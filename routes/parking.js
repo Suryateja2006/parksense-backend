@@ -41,7 +41,7 @@ const findNextFacultySlot = async () => {
 // POST /confirm_booking - Assigns a slot and returns JWT
 router.post("/confirm_booking", asyncHandler(async (req, res) => {
   const { car_number, phone } = req.body;
-
+  console.log("Confirm booking route")
   if (!car_number || !phone) {
     return res.status(400).json({
       success: false,
@@ -100,6 +100,7 @@ router.post("/confirm_booking", asyncHandler(async (req, res) => {
   );
 
   // Update license plate collection
+try {
   await LicensePlate.updateOne(
     { plate: car_number },
     {
@@ -112,6 +113,10 @@ router.post("/confirm_booking", asyncHandler(async (req, res) => {
     },
     { upsert: true }
   );
+} catch (err) {
+  console.error("Error in LicensePlate.updateOne:", err);
+}
+
 
   // Generate JWT token
   const token = jwt.sign(
