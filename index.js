@@ -80,7 +80,8 @@ const app = express();
 
 const corsOptions = {
   origin: [
-    "http://localhost:5173",  
+    "http://localhost:5173", 
+     "http://172.168.0.152:5173", 
     /https:\/\/.*\.ngrok\.io$/, 
   ],
   methods: ['GET', 'POST','PATCH'],
@@ -100,6 +101,9 @@ app.use('/api/booking', bookingRoutes);
 app.use('/api', slotsRoutes);
 app.use('/api/slots', fetchingslotRoutes);
 app.use("/api/getBookedSlots", getBookedSlots);
+app.get("/",(req,res)=>{
+  return res.send("Welcome to the booking system");
+})  
 app.use('/', unauthorizedRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {
@@ -110,9 +114,6 @@ mongoose.connect(process.env.MONGO_URI, {
   .catch(err => console.error('MongoDB connection error:', err));
 
 
-app.get("/",(req,res)=>{
-  return res.send("Welcome to the booking system");
-})  
 
 const PORT =process.env.PORT|| 8080;
 app.listen(PORT, () => {
