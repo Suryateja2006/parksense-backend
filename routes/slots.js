@@ -11,6 +11,7 @@ router.get('/occupied', async (req, res) => {
       userType: slot.userType,
       phoneNumber: slot.phoneNumber,
       bookedAt:slot.bookedAt,
+      updatedByAdmin:slot.updatedByAdmin || false,
     }));
     res.json(formattedSlots);
   } catch (err) {
