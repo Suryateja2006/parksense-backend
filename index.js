@@ -81,7 +81,8 @@ const app = express();
 const corsOptions = {
   origin: [
     "http://localhost:5173", 
-     "http://172.168.0.152:5173", 
+    "http://172.168.0.152:5173",
+    "http://192.168.1.37:5173", 
     /https:\/\/.*\.ngrok\.io$/, 
   ],
   methods: ['GET', 'POST','PATCH'],
