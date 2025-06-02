@@ -76,13 +76,15 @@ const fetchingslotRoutes = require('./routes/slots');
 const getBookedSlots = require("./routes/getBookedSlots");
 const unauthorizedRoutes = require('./routes/unauthorized');
 const entryRoutes = require('./routes/parking');
+const licenseplateroutes = require("./routes/licensePlateRoutes");
 const app = express();
 
 const corsOptions = {
   origin: [
     "http://localhost:5173", 
     "http://172.168.0.152:5173",
-    "http://192.168.1.37:5173", 
+    "http://192.168.1.37:5173",
+    "http://172.168.0.67:5173",
     /https:\/\/.*\.ngrok\.io$/, 
   ],
   methods: ['GET', 'POST','PATCH'],
@@ -106,7 +108,7 @@ app.get("/",(req,res)=>{
   return res.send("Welcome to the booking system");
 })  
 app.use('/', unauthorizedRoutes);
-
+app.use("/api/admin",licenseplateroutes);
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

@@ -53,6 +53,7 @@ const slotSchema = new mongoose.Schema({
   phone: { type: String },
   bookedAt: { type: Date },
   exitedAt: { type: Date },
+  status: { type: String, enum: ["available", "occupied"], default: "available" }
 });
 
 module.exports = mongoose.model("Slot", slotSchema);
