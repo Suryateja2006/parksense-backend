@@ -39,7 +39,8 @@ const licensePlateSchema = new mongoose.Schema({
   exitedAt: { type: Date },
   scannedAt: { type: Date },
   // status: { type: String, enum: ["booked", "exited", "unauthorized"], default: "unauthorized" }
-  unauthorized:{type:Boolean}
+  unauthorized:{type:Boolean},
+  imageBase64: { type: String } 
 });
 
 module.exports = mongoose.model("LicensePlate", licensePlateSchema);

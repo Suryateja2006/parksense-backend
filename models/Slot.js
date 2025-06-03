@@ -50,7 +50,7 @@ const slotSchema = new mongoose.Schema({
   slotNumber: { type: String, required: true },  // e.g., 'A1', 'A2'
   isBooked: { type: Boolean, default: false },
   carNumber: { type: String },
-  phone: { type: String },
+  phone: { type: String ,default:new Date().toISOString()},
   bookedAt: { type: Date },
   exitedAt: { type: Date },
   status: { type: String, enum: ["available", "occupied"], default: "available" }

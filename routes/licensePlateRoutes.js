@@ -61,8 +61,9 @@ router.delete('/unauthorized/:id', async (req, res) => {
 // Update plate status (authorize or delete)
 router.patch('/plates/:id', async (req, res) => {
   try {
+    console.log('Request body:', req.body); // Log the incoming request
     const { id } = req.params;
-    const { action, slotNumber } = req.body;
+    const { action, slotNumber, carNumber } = req.body; // Add carNumber to destructuring
 
     if (!['authorize', 'delete'].includes(action)) {
       return res.status(400).json({ 
@@ -80,9 +81,13 @@ router.patch('/plates/:id', async (req, res) => {
     }
 
     // Authorize action
+    console.log(`Authorizing plate ${id}`);
     const plate = await LicensePlate.findByIdAndUpdate(
       id,
-      { unauthorized: false },
+      { 
+        unauthorized: false,
+        plate: carNumber // Update the plate number if it was edited
+      },
       { new: true }
     );
 
@@ -93,28 +98,39 @@ router.patch('/plates/:id', async (req, res) => {
       });
     }
 
-    // Check if slot already exists for this plate
+    console.log(`Checking for existing slot for plate: ${plate.plate}`);
     const existingSlot = await Slot.findOne({ carNumber: plate.plate });
     
-    if (!existingSlot) {
-      // Create new slot only if it doesn't exist
-      const newSlot = await Slot.create({
-        carNumber: plate.plate,
-        slotNumber: slotNumber || 'UNKNOWN',
-        isBooked: true,
-        status: 'occupied',
-        bookedAt: new Date(),
-        licensePlateRef: plate._id  // Reference to the LicensePlate document
+    if (existingSlot) {
+      console.log('Existing slot found:', existingSlot);
+      return res.json({
+        success: true,
+        message: 'Vehicle already has a parking slot',
+        slot: existingSlot
       });
-
-      // Update the license plate with slot reference
-      plate.slotId = newSlot._id;
-      await plate.save();
     }
+
+    // Create new slot
+    console.log(`Creating new slot for plate: ${plate.plate}`);
+    const newSlot = await Slot.create({
+      carNumber: plate.plate,
+      slotNumber: slotNumber || 'UNKNOWN',
+      isBooked: true,
+      status: 'occupied',
+      bookedAt: new Date(),
+      licensePlateRef: plate._id
+    });
+
+    console.log('New slot created:', newSlot);
+    
+    // Update the license plate with slot reference
+    plate.slotId = newSlot._id;
+    await plate.save();
 
     res.json({
       success: true,
-      message: existingSlot ? 'Vehicle already has a parking slot' : 'Vehicle authorized and added to parking'
+      message: 'Vehicle authorized and added to parking',
+      slot: newSlot
     });
 
   } catch (error) {
@@ -126,5 +142,4 @@ router.patch('/plates/:id', async (req, res) => {
     });
   }
 });
-
 module.exports = router;

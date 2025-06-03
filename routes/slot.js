@@ -115,7 +115,7 @@ router.post('/auto-book-student', async (req, res) => {
 });
 
 router.post('/release-slot', async (req, res) => {
-  const { slotNumber} = req.body;
+  const { slotNumber } = req.body;
 
   try {
     const slot = await Slot.findOne({ slotNumber });

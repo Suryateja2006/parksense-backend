@@ -87,7 +87,7 @@ const corsOptions = {
     "http://172.168.0.67:5173",
     /https:\/\/.*\.ngrok\.io$/, 
   ],
-  methods: ['GET', 'POST','PATCH'],
+  methods: ['GET', 'POST','PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
@@ -116,9 +116,12 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
+mongoose.connection.once("open", () => {
+  console.log("✅ Connected to DB:", mongoose.connection.name); // should print "parksense"
+});
 
 
-const PORT =process.env.PORT|| 8080;
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
