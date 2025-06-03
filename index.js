@@ -85,6 +85,7 @@ const corsOptions = {
     "http://172.168.0.152:5173",
     "http://192.168.1.37:5173",
     "http://172.168.0.67:5173",
+    "https://parksense-frontend-omega.vercel.app",
     /https:\/\/.*\.ngrok\.io$/, 
   ],
   methods: ['GET', 'POST','PATCH', 'DELETE'],
