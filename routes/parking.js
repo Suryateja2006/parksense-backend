@@ -82,10 +82,8 @@ router.post("/confirm_booking", asyncHandler(async (req, res) => {
     });
   }
 
-  // Convert to IST time
-  const utcDate = new Date();
-  const istDate = new Date(utcDate.getTime() + (5.5 * 60 * 60 * 1000));
-  const formattedISTTime = istDate.toISOString().slice(0, 19).replace("T", " ");
+  const utcDate = new Date(); 
+  const formattedISTTime = utcDate.toISOString().slice(0, 19).replace("T", " ");
 
   // Book slot in database
   const slot = await Slot.findOneAndUpdate(
