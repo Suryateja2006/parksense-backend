@@ -105,7 +105,7 @@ try {
       $set: {
         phone,
         slotId: slot._id,
-        bookedAt: istDate,
+        bookedAt: formattedISTTime,
         status: "booked"
       }
     },
