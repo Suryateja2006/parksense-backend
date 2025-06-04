@@ -92,7 +92,7 @@ router.post("/confirm_booking", asyncHandler(async (req, res) => {
       isBooked: true,
       carNumber: car_number,
       phone,
-      bookedAt: istDate
+      bookedAt: formattedISTTime
     },
     { new: true, upsert: true }
   );
